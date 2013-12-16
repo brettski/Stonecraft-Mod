@@ -1,13 +1,17 @@
 package bcs2.stonecraftmod;
 
+import bcs2.stonecraftmod.gui.StonecraftChestTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.EnumHelper;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -21,7 +25,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
  
-@Mod(modid="bcs2.stonecraftmod", name="Stonecraft", version="1.0.0")
+@Mod(modid="bcs2.stonecraftmod", name="Stonecraft", version="1.1.0")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class StonecraftMod {
  
@@ -46,6 +50,7 @@ public class StonecraftMod {
 	private static EnumToolMaterial stonecraftTools = EnumHelper.addToolMaterial("Stonecraft", 2, 2000, 4.5f, 1.5f, 22);
 	
 	
+	
 	// Define armor (http://pastebin.com/FaL60zrf)
 	private static Item stonecraftHelmet;
 	private static Item stonecraftChestplate;
@@ -68,6 +73,13 @@ public class StonecraftMod {
 	private int stonecraftPickaxeId;
 	private int stonecraftAxeId;
 	private int stonecraftShovelId;
+	
+	// Define blocks
+	private static Block stonecraftBlock;
+	private static Block stonecraftChest;
+	private int stonecraftBlockId;
+	private int stonecraftChestId;
+	
 		
 		
     // The instance of your mod that Forge uses.
@@ -102,6 +114,9 @@ public class StonecraftMod {
     	stonecraftAxeId = config.get("Tool IDs", "Stonecraft Axe Id", 24027).getInt();
     	stonecraftShovelId = config.get("Tool IDs", "Stonecraft Shovel Id", 24028).getInt();    	
     	
+    	stonecraftBlockId = config.get("Block IDs", "Stonecraft Block Id", 2100).getInt();
+    	stonecraftChestId = config.get("Block IDs", "Stonecraft Chest", 2101).getInt();
+    	
     	config.save();
     	
     }
@@ -130,7 +145,10 @@ public class StonecraftMod {
         stonecraftChestplate = new StonecraftArmor(stonecraftChestplateId, stonecraftArmor, proxy.addArmor("StonecraftArmor"),1).setUnlocalizedName("stonecraftChestplate");
         stonecraftLeggings = new StonecraftArmor(stonecraftLeggingsId, stonecraftArmor, proxy.addArmor("StonecraftArmor"), 2).setUnlocalizedName("stonedCraftLeggings");
         stonecraftBoots = new StonecraftArmor(stonecraftBootsId, stonecraftArmor, proxy.addArmor("StonecraftArmor"), 3).setUnlocalizedName("stonecraftBoots");
-                
+        
+        // Settings for blocks
+        stonecraftBlock = new StonecraftBlock(stonecraftBlockId, Material.rock).setHardness(5.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("stonecraftBlock").setCreativeTab(CreativeTabs.tabBlock).setResistance(5000).setTextureName("stonecraftmod:stonecraftstone");
+        stonecraftChest = new StonecraftChest(stonecraftChestId, Material.wood).setUnlocalizedName("stonecraftChest").setCreativeTab(CreativeTabs.tabInventory);
         
         // Item names
         LanguageRegistry.addName(condensedStone, "Condensed Stone");
@@ -152,6 +170,17 @@ public class StonecraftMod {
         LanguageRegistry.addName(stonecraftPickaxe, "Stonecaft Pick");
         LanguageRegistry.addName(stonecraftAxe, "Stonecaft Axe");
         LanguageRegistry.addName(stonecraftShovel, "Stonecaft Shovel");
+        
+        // Block names
+        LanguageRegistry.addName(stonecraftBlock, "Stonecraft Block");
+        LanguageRegistry.addName(stonecraftChest, "Stonecraft Chest");
+        
+        // Block stuff
+        MinecraftForge.setBlockHarvestLevel(stonecraftBlock, "pickaxe", 2);
+        GameRegistry.registerBlock(stonecraftBlock, "stonecraftBlock");
+        GameRegistry.registerBlock(stonecraftChest, ItemBlock.class, "stonecraftChest");
+        GameRegistry.registerTileEntity(StonecraftChestTileEntity.class, "stonecraftChestTileEnity");
+        //GameRegistry.registerTileEntity(TileEntityStonecraftChest.class, "tileentitystonecraftchest");
         
         // Item recipes 
         GameRegistry.addRecipe(new ItemStack(condensedStone), " s ", "sss", " s ", 's', Block.stone);
@@ -176,6 +205,9 @@ public class StonecraftMod {
         GameRegistry.addRecipe(new ItemStack(stonecraftPickaxe), "sss", " w ", " w ", 's', hardenedStone, 'w', Item.stick);
         GameRegistry.addRecipe(new ItemStack(stonecraftAxe), "ss ", "sw ", " w ", 's', hardenedStone, 'w', Item.stick);
         GameRegistry.addRecipe(new ItemStack(stonecraftShovel), " s ", " w ", " w ", 's', hardenedStone, 'w', Item.stick);
+        
+        // Block recipes
+        GameRegistry.addRecipe(new ItemStack(stonecraftChest), "sss","scs", "sss", 's', hardenedStone, 'c', Block.chest);
         
         //GameRegistry.addShapelessRecipe(new ItemStack(Block.sapling, 1, 1), new ItemStack(Block.dirt), new ItemStack(Block.dirt));
             
