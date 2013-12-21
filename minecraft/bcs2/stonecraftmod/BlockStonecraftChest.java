@@ -596,6 +596,8 @@ public class BlockStonecraftChest extends BlockContainer
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon("planks_oak");
+    	// Minecraft uses this icon to show particles when the block breaks.  
+        //this.blockIcon = par1IconRegister.registerIcon("planks_oak");
+        this.blockIcon = par1IconRegister.registerIcon("stonecraftmod:cheststonecraft");
     }
 }

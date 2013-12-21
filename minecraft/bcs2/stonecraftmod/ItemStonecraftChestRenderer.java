@@ -30,6 +30,8 @@ public class ItemStonecraftChestRenderer implements IItemRenderer {
 
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+		// Renders the held, inventory and after block break versions of block using entity image.  
+		// Deep Details on this at (http://greyminecraftcoder.blogspot.com/2013/09/custom-item-rendering-using.html)
 		TileEntityRenderer.instance.renderTileEntityAt(new TileEntityStonecraftChest(), 0.0D, 0.0D, 0.0D, 0.0F);
 		
 	}

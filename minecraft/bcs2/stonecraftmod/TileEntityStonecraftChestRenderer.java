@@ -19,8 +19,9 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class TileEntityStonecraftChestRenderer extends TileEntitySpecialRenderer
 {
-    // Trapped chests not being used in Stonecraft
-	private static final ResourceLocation RES_TRAPPED_DOUBLE = new ResourceLocation("stonecraftmod:textures/entity/chest/trapped_double.png");
+	
+	// We are not using the trapped chest in Stonecraft.  Chest instance is forced to 0, normal
+    private static final ResourceLocation RES_TRAPPED_DOUBLE = new ResourceLocation("stonecraftmod:textures/entity/chest/trapped_double.png");
     private static final ResourceLocation RES_CHRISTMAS_DOUBLE = new ResourceLocation("stonecraftmod:textures/entity/chest/double_chest_stonecraft.png");
     private static final ResourceLocation RES_NORMAL_DOUBLE = new ResourceLocation("stonecraftmod:textures/entity/chest/double_chest_stonecraft.png");
     private static final ResourceLocation RES_TRAPPED_SINGLE = new ResourceLocation("stonecraftmod:textures/entity/chest/trapped.png");
@@ -49,45 +50,45 @@ public class TileEntityStonecraftChestRenderer extends TileEntitySpecialRenderer
     /**
      * Renders the TileEntity for the chest at a position.
      */
-    public void renderTileEntityStonecraftChestAt(TileEntityStonecraftChest par1TileEntityStonecraftChest, double par2, double par4, double par6, float par8)
+    public void renderTileEntityChestAt(TileEntityStonecraftChest par1TileEntityChest, double par2, double par4, double par6, float par8)
     {
         int i;
 
-        if (!par1TileEntityStonecraftChest.hasWorldObj())
+        if (!par1TileEntityChest.hasWorldObj())
         {
             i = 0;
         }
         else
         {
-            Block block = par1TileEntityStonecraftChest.getBlockType();
-            i = par1TileEntityStonecraftChest.getBlockMetadata();
+            Block block = par1TileEntityChest.getBlockType();
+            i = par1TileEntityChest.getBlockMetadata();
 
             if (block instanceof BlockStonecraftChest && i == 0)
             {
                 try
                 {
-                    ((BlockStonecraftChest)block).unifyAdjacentChests(par1TileEntityStonecraftChest.getWorldObj(), par1TileEntityStonecraftChest.xCoord, par1TileEntityStonecraftChest.yCoord, par1TileEntityStonecraftChest.zCoord);
+                    ((BlockStonecraftChest)block).unifyAdjacentChests(par1TileEntityChest.getWorldObj(), par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
                 }
                 catch (ClassCastException e)
                 {
                     FMLLog.severe("Attempted to render a chest at %d,  %d, %d that was not a chest",
-                            par1TileEntityStonecraftChest.xCoord, par1TileEntityStonecraftChest.yCoord, par1TileEntityStonecraftChest.zCoord);
+                            par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
                 }
-                i = par1TileEntityStonecraftChest.getBlockMetadata();
+                i = par1TileEntityChest.getBlockMetadata();
             }
 
-            par1TileEntityStonecraftChest.checkForAdjacentChests();
+            par1TileEntityChest.checkForAdjacentChests();
         }
 
-        if (par1TileEntityStonecraftChest.adjacentChestZNeg == null && par1TileEntityStonecraftChest.adjacentChestXNeg == null)
+        if (par1TileEntityChest.adjacentChestZNeg == null && par1TileEntityChest.adjacentChestXNeg == null)
         {
             ModelChest modelchest;
 
-            if (par1TileEntityStonecraftChest.adjacentChestXPos == null && par1TileEntityStonecraftChest.adjacentChestZPosition == null)
+            if (par1TileEntityChest.adjacentChestXPos == null && par1TileEntityChest.adjacentChestZPosition == null)
             {
                 modelchest = this.chestModel;
 
-                if (par1TileEntityStonecraftChest.getChestType() == 1)
+                if (par1TileEntityChest.getChestType() == 1)
                 {
                     this.bindTexture(RES_TRAPPED_SINGLE);
                 }
@@ -104,7 +105,7 @@ public class TileEntityStonecraftChestRenderer extends TileEntitySpecialRenderer
             {
                 modelchest = this.largeChestModel;
 
-                if (par1TileEntityStonecraftChest.getChestType() == 1)
+                if (par1TileEntityChest.getChestType() == 1)
                 {
                     this.bindTexture(RES_TRAPPED_DOUBLE);
                 }
@@ -146,24 +147,24 @@ public class TileEntityStonecraftChestRenderer extends TileEntitySpecialRenderer
                 short1 = -90;
             }
 
-            if (i == 2 && par1TileEntityStonecraftChest.adjacentChestXPos != null)
+            if (i == 2 && par1TileEntityChest.adjacentChestXPos != null)
             {
                 GL11.glTranslatef(1.0F, 0.0F, 0.0F);
             }
 
-            if (i == 5 && par1TileEntityStonecraftChest.adjacentChestZPosition != null)
+            if (i == 5 && par1TileEntityChest.adjacentChestZPosition != null)
             {
                 GL11.glTranslatef(0.0F, 0.0F, -1.0F);
             }
 
             GL11.glRotatef((float)short1, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-            float f1 = par1TileEntityStonecraftChest.prevLidAngle + (par1TileEntityStonecraftChest.lidAngle - par1TileEntityStonecraftChest.prevLidAngle) * par8;
+            float f1 = par1TileEntityChest.prevLidAngle + (par1TileEntityChest.lidAngle - par1TileEntityChest.prevLidAngle) * par8;
             float f2;
 
-            if (par1TileEntityStonecraftChest.adjacentChestZNeg != null)
+            if (par1TileEntityChest.adjacentChestZNeg != null)
             {
-                f2 = par1TileEntityStonecraftChest.adjacentChestZNeg.prevLidAngle + (par1TileEntityStonecraftChest.adjacentChestZNeg.lidAngle - par1TileEntityStonecraftChest.adjacentChestZNeg.prevLidAngle) * par8;
+                f2 = par1TileEntityChest.adjacentChestZNeg.prevLidAngle + (par1TileEntityChest.adjacentChestZNeg.lidAngle - par1TileEntityChest.adjacentChestZNeg.prevLidAngle) * par8;
 
                 if (f2 > f1)
                 {
@@ -171,9 +172,9 @@ public class TileEntityStonecraftChestRenderer extends TileEntitySpecialRenderer
                 }
             }
 
-            if (par1TileEntityStonecraftChest.adjacentChestXNeg != null)
+            if (par1TileEntityChest.adjacentChestXNeg != null)
             {
-                f2 = par1TileEntityStonecraftChest.adjacentChestXNeg.prevLidAngle + (par1TileEntityStonecraftChest.adjacentChestXNeg.lidAngle - par1TileEntityStonecraftChest.adjacentChestXNeg.prevLidAngle) * par8;
+                f2 = par1TileEntityChest.adjacentChestXNeg.prevLidAngle + (par1TileEntityChest.adjacentChestXNeg.lidAngle - par1TileEntityChest.adjacentChestXNeg.prevLidAngle) * par8;
 
                 if (f2 > f1)
                 {
@@ -193,6 +194,6 @@ public class TileEntityStonecraftChestRenderer extends TileEntitySpecialRenderer
 
     public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
     {
-        this.renderTileEntityStonecraftChestAt((TileEntityStonecraftChest)par1TileEntity, par2, par4, par6, par8);
+        this.renderTileEntityChestAt((TileEntityStonecraftChest)par1TileEntity, par2, par4, par6, par8);
     }
 }

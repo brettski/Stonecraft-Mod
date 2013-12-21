@@ -16,7 +16,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderers() {
 		// This is for rendering entities and so forth later on
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStonecraftChest.class, new TileEntityStonecraftChestRenderer());
-		//MinecraftForgeClient.registerItemRenderer(StonecraftMod.stonecraftChest.blockID, new ItemStonecraftChestRenderer());
+		MinecraftForgeClient.registerItemRenderer(StonecraftMod.stonecraftChest.blockID, new ItemStonecraftChestRenderer());
 	}
 	
 	public int addArmor(String armor) {

@@ -122,7 +122,6 @@ public class StonecraftMod {
    
     @EventHandler
     public void load(FMLInitializationEvent event) {
-        proxy.registerRenderers();
 
         // Settings for items  
         condensedStone = new StonecraftStone(condensedStoneId).setUnlocalizedName("condensedStone");
@@ -210,7 +209,7 @@ public class StonecraftMod {
         //GameRegistry.addShapelessRecipe(new ItemStack(Block.sapling, 1, 1), new ItemStack(Block.dirt), new ItemStack(Block.dirt));
             
 
-    
+        proxy.registerRenderers();
     }
     
     
