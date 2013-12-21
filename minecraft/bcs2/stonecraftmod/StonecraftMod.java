@@ -1,6 +1,5 @@
 package bcs2.stonecraftmod;
 
-import bcs2.stonecraftmod.gui.StonecraftChestTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,18 +24,18 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
  
-@Mod(modid="bcs2.stonecraftmod", name="Stonecraft", version="1.1.0")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false)
+@Mod(modid="bcs2.stonecraftmod", name="Stonecraft", version="1.2.0")
+@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels = { "StonecraftMod" }, packetHandler = StonecraftPacketHandler.class)
 public class StonecraftMod {
  
 
 	// Define items
-	private static Item condensedStone;
-	private static Item stonecraftRock;
-	private static Item stickyRock;
-	private static Item hardenedStone;
-	private static Item rawAdhesive;
-	private static Item cookedAdhesive;
+	public static Item condensedStone;
+	public static Item stonecraftRock;
+	public static Item stickyRock;
+	public static Item hardenedStone;
+	public static Item rawAdhesive;
+	public static Item cookedAdhesive;
 	private int condensedStoneId;
 	private int stonecraftRockId;
 	private int stickyRockId;
@@ -46,16 +45,16 @@ public class StonecraftMod {
 
 	// Define material
 	// Look at Enum class for description (<ctrl> + click)
-	private static EnumArmorMaterial stonecraftArmor = EnumHelper.addArmorMaterial("Stonecraft", 100, new int[] {2, 5, 3, 1}, 25);
-	private static EnumToolMaterial stonecraftTools = EnumHelper.addToolMaterial("Stonecraft", 2, 2000, 4.5f, 1.5f, 22);
+	public static EnumArmorMaterial stonecraftArmor = EnumHelper.addArmorMaterial("Stonecraft", 100, new int[] {2, 5, 3, 1}, 25);
+	public static EnumToolMaterial stonecraftTools = EnumHelper.addToolMaterial("Stonecraft", 2, 2000, 4.5f, 1.5f, 22);
 	
 	
 	
 	// Define armor (http://pastebin.com/FaL60zrf)
-	private static Item stonecraftHelmet;
-	private static Item stonecraftChestplate;
-	private static Item stonecraftLeggings;
-	private static Item stonecraftBoots;
+	public static Item stonecraftHelmet;
+	public static Item stonecraftChestplate;
+	public static Item stonecraftLeggings;
+	public static Item stonecraftBoots;
 	private int stonecraftHelmetId;
 	private int stonecraftChestplateId;
 	private int stonecraftLeggingsId;
@@ -63,11 +62,11 @@ public class StonecraftMod {
 	
 	
 	// Define tools
-	private static Item stonecraftSword;
-	private static Item stonecraftHoe;
-	private static Item stonecraftPickaxe;
-	private static Item stonecraftAxe;
-	private static Item stonecraftShovel;
+	public static Item stonecraftSword;
+	public static Item stonecraftHoe;
+	public static Item stonecraftPickaxe;
+	public static Item stonecraftAxe;
+	public static Item stonecraftShovel;
 	private int stonecraftSwordId;
 	private int stonecraftHoeId;
 	private int stonecraftPickaxeId;
@@ -75,8 +74,8 @@ public class StonecraftMod {
 	private int stonecraftShovelId;
 	
 	// Define blocks
-	private static Block stonecraftBlock;
-	private static Block stonecraftChest;
+	public static Block stonecraftBlock;
+	public static Block stonecraftChest;
 	private int stonecraftBlockId;
 	private int stonecraftChestId;
 	
@@ -131,7 +130,7 @@ public class StonecraftMod {
         stickyRock = new StonecraftStone(stickyRockId).setUnlocalizedName("stickyRock").setTextureName("stonecraftmod:sticky_rock");
         hardenedStone = new StonecraftStone(hardenedStoneId).setUnlocalizedName("hardenedStone").setTextureName("stonecraftmod:hardened_rock");
         rawAdhesive = new StonecraftAdhesive(rawAdhesiveId);
-        cookedAdhesive = new StonecraftAdhesive(cookedAdhesiveId).setMaxStackSize(4).setUnlocalizedName("cookedAdhesive").setContainerItem(Item.bucketEmpty).setTextureName("stonecraftmod:bucket_adhesive");
+        cookedAdhesive = new StonecraftAdhesive(cookedAdhesiveId).setUnlocalizedName("cookedAdhesive").setMaxStackSize(4).setContainerItem(Item.bucketEmpty).setTextureName("stonecraftmod:bucket_adhesive");
         
         // settings for tools
         stonecraftSword = new StonecraftSword(stonecraftSwordId, stonecraftTools).setUnlocalizedName("stonecraftSword");
@@ -147,8 +146,8 @@ public class StonecraftMod {
         stonecraftBoots = new StonecraftArmor(stonecraftBootsId, stonecraftArmor, proxy.addArmor("StonecraftArmor"), 3).setUnlocalizedName("stonecraftBoots");
         
         // Settings for blocks
-        stonecraftBlock = new StonecraftBlock(stonecraftBlockId, Material.rock).setHardness(5.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("stonecraftBlock").setCreativeTab(CreativeTabs.tabBlock).setResistance(5000).setTextureName("stonecraftmod:stonecraftstone");
-        stonecraftChest = new StonecraftChest(stonecraftChestId, Material.wood).setUnlocalizedName("stonecraftChest").setCreativeTab(CreativeTabs.tabInventory);
+        stonecraftBlock = new StonecraftBlock(stonecraftBlockId, Material.rock).setUnlocalizedName("stonecraftBlock").setHardness(5.0f).setStepSound(Block.soundStoneFootstep).setCreativeTab(CreativeTabs.tabBlock).setResistance(5000).setTextureName("stonecraftmod:stonecraftstone");
+        stonecraftChest = new BlockStonecraftChest(stonecraftChestId).setUnlocalizedName("stonecraftChest").setCreativeTab(CreativeTabs.tabDecorations);
         
         // Item names
         LanguageRegistry.addName(condensedStone, "Condensed Stone");
@@ -178,9 +177,8 @@ public class StonecraftMod {
         // Block stuff
         MinecraftForge.setBlockHarvestLevel(stonecraftBlock, "pickaxe", 2);
         GameRegistry.registerBlock(stonecraftBlock, "stonecraftBlock");
-        GameRegistry.registerBlock(stonecraftChest, ItemBlock.class, "stonecraftChest");
-        GameRegistry.registerTileEntity(StonecraftChestTileEntity.class, "stonecraftChestTileEnity");
-        //GameRegistry.registerTileEntity(TileEntityStonecraftChest.class, "tileentitystonecraftchest");
+        GameRegistry.registerBlock(stonecraftChest, "stonecraftChest");
+        GameRegistry.registerTileEntity(TileEntityStonecraftChest.class, "tileentitystonecraftchest");
         
         // Item recipes 
         GameRegistry.addRecipe(new ItemStack(condensedStone), " s ", "sss", " s ", 's', Block.stone);
