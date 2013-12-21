@@ -41,7 +41,8 @@ public class BlockStonecraftChest extends BlockContainer
         this.setCreativeTab(CreativeTabs.tabDecorations);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
         this.setStepSound(Block.soundStoneFootstep);
-        this.setResistance(5000);
+        this.setResistance(2000);
+        this.setHardness(5.0f);
     }
 
     /**

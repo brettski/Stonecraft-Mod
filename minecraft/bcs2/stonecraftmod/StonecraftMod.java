@@ -145,7 +145,7 @@ public class StonecraftMod {
         stonecraftBoots = new StonecraftArmor(stonecraftBootsId, stonecraftArmor, proxy.addArmor("StonecraftArmor"), 3).setUnlocalizedName("stonecraftBoots");
         
         // Settings for blocks
-        stonecraftBlock = new StonecraftBlock(stonecraftBlockId, Material.rock).setUnlocalizedName("stonecraftBlock").setHardness(5.0f).setStepSound(Block.soundStoneFootstep).setCreativeTab(CreativeTabs.tabBlock).setResistance(5000).setTextureName("stonecraftmod:stonecraftstone");
+        stonecraftBlock = new StonecraftBlock(stonecraftBlockId, Material.rock).setUnlocalizedName("stonecraftBlock").setHardness(5.0f).setStepSound(Block.soundStoneFootstep).setCreativeTab(CreativeTabs.tabBlock).setResistance(2000).setTextureName("stonecraftmod:stonecraftstone");
         stonecraftChest = new BlockStonecraftChest(stonecraftChestId).setUnlocalizedName("stonecraftChest").setCreativeTab(CreativeTabs.tabDecorations);
         
         // Item names
